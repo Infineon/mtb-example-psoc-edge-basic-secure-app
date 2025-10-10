@@ -6,7 +6,7 @@ This code example has a three project structure: CM33 secure, CM33 non-secure, a
 
 [View this README on GitHub.](https://github.com/Infineon/mtb-example-psoc-edge-basic-secure-app)
 
-[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzg1MzciLCJTcGVjIE51bWJlciI6IjAwMi0zODUzNyIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBCYXNpYyBzZWN1cmUgYXBwbGljYXRpb24iLCJyaWQiOiJ2YXN1bWEgbmFyYXlhbmEiLCJEb2MgdmVyc2lvbiI6IjIuMC4xIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IklDVyIsIkRvYyBGYW1pbHkiOiJQU09DIn0=)
+[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzg1MzciLCJTcGVjIE51bWJlciI6IjAwMi0zODUzNyIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBCYXNpYyBzZWN1cmUgYXBwbGljYXRpb24iLCJyaWQiOiJ2YXN1bWEgbmFyYXlhbmEiLCJEb2MgdmVyc2lvbiI6IjIuMC4yIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IklDVyIsIkRvYyBGYW1pbHkiOiJQU09DIn0=)
 
 See the [Design and implementation](docs/design_and_implementation.md) for the functional description of this code example.
 
@@ -94,8 +94,16 @@ Ownership of the device should be transferred to yourself before changing the po
 
 2. Execute the following command to initialize the tools. This is required once after the new version of EAP is installed
 
+   - For EPC2 device, use this command:
+   
     ```
     edgeprotecttools -t pse8xs2 init
+    ```
+    
+    - For EPC4 device, use this command:
+    
+    ```
+    edgeprotecttools -t pse8xs4 init
     ```
 
 3. Execute the following command to configure the openOCD tools path:
@@ -120,9 +128,10 @@ Ownership of the device should be transferred to yourself before changing the po
 
 6. Submit the generated CSR to **Edge Protect Signing Service** [here](https://osts.infineon.com/) to generate the Infineon-signed OEM certificate and download the generated certificate
 
-    **Figure 2. Submit CSR to generate signed certificate**
+   **Figure 2. Submit CSR to generate signed certificate**
 
-    ![](images/epss-csr-submission.jpg)
+   ![](images/epss-csr-submission.jpg)
+    
 
 7. Provision the device with the new key and certificate to transfer the ownserhip
 
@@ -244,6 +253,7 @@ Document title: *CE238537* – *PSOC&trade; Edge MCU: Basic secure application*
  1.x.0   | New code example <br> Early access release
  2.0.0   | GitHub release
  2.0.1   | Minor Updates to README
+ 2.0.2   | EPC4 support instructions updated. 
 <br>
 
 All referenced product or service names and trademarks are the property of their respective owners.
