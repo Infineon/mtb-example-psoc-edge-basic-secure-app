@@ -6,7 +6,7 @@ This code example has a three project structure: CM33 secure, CM33 non-secure, a
 
 [View this README on GitHub.](https://github.com/Infineon/mtb-example-psoc-edge-basic-secure-app)
 
-[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzg1MzciLCJTcGVjIE51bWJlciI6IjAwMi0zODUzNyIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBCYXNpYyBzZWN1cmUgYXBwbGljYXRpb24iLCJyaWQiOiJ2YXN1bWEgbmFyYXlhbmEiLCJEb2MgdmVyc2lvbiI6IjIuMC4yIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IklDVyIsIkRvYyBGYW1pbHkiOiJQU09DIn0=)
+[Provide feedback on this code example.](https://yourvoice.infineon.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzg1MzciLCJTcGVjIE51bWJlciI6IjAwMi0zODUzNyIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBCYXNpYyBzZWN1cmUgYXBwbGljYXRpb24iLCJyaWQiOiJ2YXN1bWEubmFyYXlhbmFAaW5maW5lb24uY29tIiwiRG9jIHZlcnNpb24iOiIyLjEuMCIsIkRvYyBMYW5ndWFnZSI6IkVuZ2xpc2giLCJEb2MgRGl2aXNpb24iOiJNQ0QiLCJEb2MgQlUiOiJJQ1ciLCJEb2MgRmFtaWx5IjoiUFNPQyJ9)
 
 See the [Design and implementation](docs/design_and_implementation.md) for the functional description of this code example.
 
@@ -17,6 +17,7 @@ See the [Design and implementation](docs/design_and_implementation.md) for the f
 - Board support package (BSP) minimum required version for:
    - KIT_PSE84_EVAL_EPC2: v1.0.0
    - KIT_PSE84_EVAL_EPC4: v1.0.0
+   - KIT_PSE84_AI: v1.0.0
 - Programming language: C
 - Associated parts: All [PSOC&trade; Edge E84 MCU](https://www.infineon.com/products/microcontroller/32-bit-psoc-arm-cortex/32-bit-psoc-edge-arm/psoc-edge-e84) parts
 
@@ -33,7 +34,7 @@ See the [Design and implementation](docs/design_and_implementation.md) for the f
 
 - [PSOC&trade; Edge E84 Evaluation Kit](https://www.infineon.com/KIT_PSE84_EVAL) (`KIT_PSE84_EVAL_EPC2`) – Default value of `TARGET`
 - [PSOC&trade; Edge E84 Evaluation Kit](https://www.infineon.com/KIT_PSE84_EVAL) (`KIT_PSE84_EVAL_EPC4`)
-
+- [PSOC&trade; Edge E84 AI Kit](https://www.infineon.com/KIT_PSE84_AI) (`KIT_PSE84_AI`)
 
 ## Hardware setup
 
@@ -43,6 +44,7 @@ Ensure the following jumper and pin configuration on board.
 - BOOT SW must be in the HIGH/ON position
 - J20 and J21 must be in the tristate/not connected (NC) position
 
+> **Note:** This hardware setup is not required for KIT_PSE84_AI
 
 ## Software setup
 
@@ -92,15 +94,15 @@ Ownership of the device should be transferred to yourself before changing the po
 
     ```
 
-2. Execute the following command to initialize the tools. This is required once after the new version of EAP is installed
+2. Execute the following command to initialize the tools. This step is required one-time when using new application directory or new version of the tools.
 
-   - For EPC2 device, use this command:
+   - For EPC2 devices (KIT_PSE84_EVAL_EPC2 and KIT_PSE84_AI), use this command:
    
     ```
     edgeprotecttools -t pse8xs2 init
     ```
     
-    - For EPC4 device, use this command:
+    - For EPC4 device (KIT_PSE84_EVAL_EPC4), use this command:
     
     ```
     edgeprotecttools -t pse8xs4 init
@@ -253,7 +255,8 @@ Document title: *CE238537* – *PSOC&trade; Edge MCU: Basic secure application*
  1.x.0   | New code example <br> Early access release
  2.0.0   | GitHub release
  2.0.1   | Minor Updates to README
- 2.0.2   | EPC4 support instructions updated. 
+ 2.0.2   | EPC4 support instructions updated
+ 2.1.0   | Added support for KIT_PSE84_AI
 <br>
 
 All referenced product or service names and trademarks are the property of their respective owners.
