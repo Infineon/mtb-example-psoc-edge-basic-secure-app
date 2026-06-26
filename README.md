@@ -3,10 +3,11 @@
 This code example is designed to guide you through the project-signing process (of *proj_cm33_s*) in the application to demonstrate how to extend the root of trust to the first user project (*proj_cm33_s*) from the extended boot.
 
 This code example has a three project structure: CM33 secure, CM33 non-secure, and CM55 projects. All three projects are programmed to the external QSPI flash and executed in Execute in Place (XIP) mode. Extended boot launches the CM33 secure project from a fixed location in the external flash, which then configures the protection settings and launches the CM33 non-secure application. Additionally, CM33 non-secure application enables CM55 CPU and launches the CM55 application.
+> **Note:** On the KIT_PSE84_HMI, all three projects are programmed to the external OSPI flash instead of QSPI.
 
 [View this README on GitHub.](https://github.com/Infineon/mtb-example-psoc-edge-basic-secure-app)
 
-[Provide feedback on this code example.](https://yourvoice.infineon.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzg1MzciLCJTcGVjIE51bWJlciI6IjAwMi0zODUzNyIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBCYXNpYyBzZWN1cmUgYXBwbGljYXRpb24iLCJyaWQiOiJ2YXN1bWEubmFyYXlhbmFAaW5maW5lb24uY29tIiwiRG9jIHZlcnNpb24iOiIyLjIuMCIsIkRvYyBMYW5ndWFnZSI6IkVuZ2xpc2giLCJEb2MgRGl2aXNpb24iOiJNQ0QiLCJEb2MgQlUiOiJJQ1ciLCJEb2MgRmFtaWx5IjoiUFNPQyJ9)
+[Provide feedback on this code example.](https://yourvoice.infineon.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzg1MzciLCJTcGVjIE51bWJlciI6IjAwMi0zODUzNyIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBCYXNpYyBzZWN1cmUgYXBwbGljYXRpb24iLCJyaWQiOiJ2YXN1bWEubmFyYXlhbmFAaW5maW5lb24uY29tIiwiRG9jIHZlcnNpb24iOiIyLjMuMCIsIkRvYyBMYW5ndWFnZSI6IkVuZ2xpc2giLCJEb2MgRGl2aXNpb24iOiJNQ0QiLCJEb2MgQlUiOiJJQ1ciLCJEb2MgRmFtaWx5IjoiUFNPQyJ9)
 
 See the [Design and implementation](docs/design_and_implementation.md) for the functional description of this code example.
 
@@ -18,6 +19,7 @@ See the [Design and implementation](docs/design_and_implementation.md) for the f
    - KIT_PSE84_EVAL_EPC2: v1.0.0
    - KIT_PSE84_EVAL_EPC4: v1.0.0
    - KIT_PSE84_AI: v1.0.0
+   - KIT_PSE84_HMI: v1.3.0   
 - Programming language: C
 - Associated parts: All [PSOC&trade; Edge E84 MCU](https://www.infineon.com/products/microcontroller/32-bit-psoc-arm-cortex/32-bit-psoc-edge-arm/psoc-edge-e84) parts
 
@@ -35,6 +37,7 @@ See the [Design and implementation](docs/design_and_implementation.md) for the f
 - [PSOC&trade; Edge E84 Evaluation Kit](https://www.infineon.com/KIT_PSE84_EVAL) (`KIT_PSE84_EVAL_EPC2`) – Default value of `TARGET`
 - [PSOC&trade; Edge E84 Evaluation Kit](https://www.infineon.com/KIT_PSE84_EVAL) (`KIT_PSE84_EVAL_EPC4`)
 - [PSOC&trade; Edge E84 AI Kit](https://www.infineon.com/KIT_PSE84_AI) (`KIT_PSE84_AI`)
+- [PSOC&trade; Edge E84 HMI Kit](https://www.infineon.com/KIT_PSE84_HMI) (`KIT_PSE84_HMI`)
 
 ## Hardware setup
 
@@ -42,7 +45,7 @@ This example uses the board's default configuration. See the kit user guide to e
 
 Ensure the following jumper and pin configuration on board.
 - BOOT SW must be in the HIGH/ON position
-- J20 and J21 must be in the tristate/not connected (NC) position
+- J20 and J21 must be in the tristate/not connected (NC) position for the PSOC&trade; Edge E84 Evaluation Kit
 
 > **Note:** This hardware setup is not required for KIT_PSE84_AI
 
@@ -91,7 +94,6 @@ Ownership of the device should be transferred to yourself before changing the po
 
     ```
     cd <app-directory>
-
     ```
 
 2. Execute the following command to initialize the tools. This step is required one-time when using new application directory or new version of the tools.
@@ -150,15 +152,33 @@ To enable secure boot in the PSOC&trade; Edge device, provision it with the `sec
 
 The OEM policy file (*policy_oem_provisioning.json*) is located in the *[application directory]/policy/* directory, which is created when `edgeprotecttools` is initialized. For `edgeprotecttools` initilization, see Section 2.2.2.1 of "Getting started with PSOC&trade; Edge security".
 
-1. In the OEM policy, set the `extended_boot_policy` > `secure_boot` > `value` to 'true': 
+1. In the OEM policy make the following changes:
+    
+    a. Set the `extended_boot_policy` > `secure_boot` > `value` to 'true': 
 
+     ```
+        "extended_boot_policy": {
+            "secure_boot": {
+            "description": "Disable/Enable secure boot option",
+            "value": true
+            }
     ```
-      "extended_boot_policy": {
-        "secure_boot": {
-          "description": "Disable/Enable secure boot option",
-          "value": true
-        }
+    b. For KIT_PSE84_HMI, set the `external_flash` > `smif_chip_select` > `value` to '0' and `external_flash` > `smif_data_width` > `value` to '8':
+
+     ```
+        "external_flash": {
+            "smif_chip_select": {
+                "description": "Chip select for primary external flash",
+                "applicable_conf": "0, 1, 2, 3",
+                "value": 0
+            },
+            "smif_data_width": {
+                "description": "Select data width used to interface the external flash",
+                "applicable_conf": "4, 8",
+                "value": 8
+            },
     ```
+
 
 2. Once the policy is updated, provision the device with the updated policy
 
@@ -258,6 +278,7 @@ Document title: *CE238537* – *PSOC&trade; Edge MCU: Basic secure application*
  2.0.2   | EPC4 support instructions updated
  2.1.0   | Added support for KIT_PSE84_AI
  2.2.0   | Updated design files to fix ModusToolbox&trade; v3.7 build warnings
+ 2.3.0   | Added support for KIT_PSE84_HMI
 <br>
 
 All referenced product or service names and trademarks are the property of their respective owners.
@@ -268,7 +289,7 @@ PSOC&trade;, formerly known as PSoC&trade;, is a trademark of Infineon Technolog
 
 ---------------------------------------------------------
 
-© Cypress Semiconductor Corporation, 2025. This document is the property of Cypress Semiconductor Corporation, an Infineon Technologies company, and its affiliates ("Cypress").  This document, including any software or firmware included or referenced in this document ("Software"), is owned by Cypress under the intellectual property laws and treaties of the United States and other countries worldwide.  Cypress reserves all rights under such laws and treaties and does not, except as specifically stated in this paragraph, grant any license under its patents, copyrights, trademarks, or other intellectual property rights.  If the Software is not accompanied by a license agreement and you do not otherwise have a written agreement with Cypress governing the use of the Software, then Cypress hereby grants you a personal, non-exclusive, nontransferable license (without the right to sublicense) (1) under its copyright rights in the Software (a) for Software provided in source code form, to modify and reproduce the Software solely for use with Cypress hardware products, only internally within your organization, and (b) to distribute the Software in binary code form externally to end users (either directly or indirectly through resellers and distributors), solely for use on Cypress hardware product units, and (2) under those claims of Cypress's patents that are infringed by the Software (as provided by Cypress, unmodified) to make, use, distribute, and import the Software solely for use with Cypress hardware products.  Any other use, reproduction, modification, translation, or compilation of the Software is prohibited.
+© Cypress Semiconductor Corporation, 2025-2026. This document is the property of Cypress Semiconductor Corporation, an Infineon Technologies company, and its affiliates ("Cypress").  This document, including any software or firmware included or referenced in this document ("Software"), is owned by Cypress under the intellectual property laws and treaties of the United States and other countries worldwide.  Cypress reserves all rights under such laws and treaties and does not, except as specifically stated in this paragraph, grant any license under its patents, copyrights, trademarks, or other intellectual property rights.  If the Software is not accompanied by a license agreement and you do not otherwise have a written agreement with Cypress governing the use of the Software, then Cypress hereby grants you a personal, non-exclusive, nontransferable license (without the right to sublicense) (1) under its copyright rights in the Software (a) for Software provided in source code form, to modify and reproduce the Software solely for use with Cypress hardware products, only internally within your organization, and (b) to distribute the Software in binary code form externally to end users (either directly or indirectly through resellers and distributors), solely for use on Cypress hardware product units, and (2) under those claims of Cypress's patents that are infringed by the Software (as provided by Cypress, unmodified) to make, use, distribute, and import the Software solely for use with Cypress hardware products.  Any other use, reproduction, modification, translation, or compilation of the Software is prohibited.
 <br>
 TO THE EXTENT PERMITTED BY APPLICABLE LAW, CYPRESS MAKES NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, WITH REGARD TO THIS DOCUMENT OR ANY SOFTWARE OR ACCOMPANYING HARDWARE, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  No computing device can be absolutely secure.  Therefore, despite security measures implemented in Cypress hardware or software products, Cypress shall have no liability arising out of any security breach, such as unauthorized access to or use of a Cypress product. CYPRESS DOES NOT REPRESENT, WARRANT, OR GUARANTEE THAT CYPRESS PRODUCTS, OR SYSTEMS CREATED USING CYPRESS PRODUCTS, WILL BE FREE FROM CORRUPTION, ATTACK, VIRUSES, INTERFERENCE, HACKING, DATA LOSS OR THEFT, OR OTHER SECURITY INTRUSION (collectively, "Security Breach").  Cypress disclaims any liability relating to any Security Breach, and you shall and hereby do release Cypress from any claim, damage, or other liability arising from any Security Breach.  In addition, the products described in these materials may contain design defects or errors known as errata which may cause the product to deviate from published specifications. To the extent permitted by applicable law, Cypress reserves the right to make changes to this document without further notice. Cypress does not assume any liability arising out of the application or use of any product or circuit described in this document. Any information provided in this document, including any sample design information or programming code, is provided only for reference purposes.  It is the responsibility of the user of this document to properly design, program, and test the functionality and safety of any application made of this information and any resulting product.  "High-Risk Device" means any device or system whose failure could cause personal injury, death, or property damage.  Examples of High-Risk Devices are weapons, nuclear installations, surgical implants, and other medical devices.  "Critical Component" means any component of a High-Risk Device whose failure to perform can be reasonably expected to cause, directly or indirectly, the failure of the High-Risk Device, or to affect its safety or effectiveness.  Cypress is not liable, in whole or in part, and you shall and hereby do release Cypress from any claim, damage, or other liability arising from any use of a Cypress product as a Critical Component in a High-Risk Device. You shall indemnify and hold Cypress, including its affiliates, and its directors, officers, employees, agents, distributors, and assigns harmless from and against all claims, costs, damages, and expenses, arising out of any claim, including claims for product liability, personal injury or death, or property damage arising from any use of a Cypress product as a Critical Component in a High-Risk Device. Cypress products are not intended or authorized for use as a Critical Component in any High-Risk Device except to the limited extent that (i) Cypress's published data sheet for the product explicitly states Cypress has qualified the product for use in a specific High-Risk Device, or (ii) Cypress has given you advance written authorization to use the product as a Critical Component in the specific High-Risk Device and you have signed a separate indemnification agreement.
 <br>
