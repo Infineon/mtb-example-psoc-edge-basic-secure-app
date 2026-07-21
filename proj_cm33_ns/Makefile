@@ -56,7 +56,8 @@ VERBOSE=
 COMPONENTS+=
 
 # Like COMPONENTS, but disable optional code that was enabled by default.
-DISABLE_COMPONENTS=
+DISABLE_COMPONENTS+=MW_IFX_MCUBOOT_PSE84
+DISABLE_COMPONENTS+= MW_WOLFSSL
 
 CORE=CM33
 CORE_NAME=CM33_0
@@ -110,8 +111,9 @@ PREBUILD=
 # Custom post-build commands to run.
 POSTBUILD=
 
-
-
+#Ignore MCUboot files, they are not needed for this project.
+MCUBOOT_ROOT = $(SEARCH_ifx-mcuboot-pse84)
+CY_IGNORE += $(MCUBOOT_ROOT)
 ################################################################################
 # Paths
 ################################################################################
