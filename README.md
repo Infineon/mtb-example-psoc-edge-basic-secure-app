@@ -7,19 +7,20 @@ This code example has a three project structure: CM33 secure, CM33 non-secure, a
 
 [View this README on GitHub.](https://github.com/Infineon/mtb-example-psoc-edge-basic-secure-app)
 
-[Provide feedback on this code example.](https://yourvoice.infineon.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzg1MzciLCJTcGVjIE51bWJlciI6IjAwMi0zODUzNyIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBCYXNpYyBzZWN1cmUgYXBwbGljYXRpb24iLCJyaWQiOiJ2YXN1bWEubmFyYXlhbmFAaW5maW5lb24uY29tIiwiRG9jIHZlcnNpb24iOiIyLjQuMSIsIkRvYyBMYW5ndWFnZSI6IkVuZ2xpc2giLCJEb2MgRGl2aXNpb24iOiJNQ0QiLCJEb2MgQlUiOiJJQ1ciLCJEb2MgRmFtaWx5IjoiUFNPQyJ9)
+[Provide feedback on this code example.](https://yourvoice.infineon.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzg1MzciLCJTcGVjIE51bWJlciI6IjAwMi0zODUzNyIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBCYXNpYyBzZWN1cmUgYXBwbGljYXRpb24iLCJyaWQiOiJ2YXN1bWEubmFyYXlhbmFAaW5maW5lb24uY29tIiwiRG9jIHZlcnNpb24iOiIyLjUuMCIsIkRvYyBMYW5ndWFnZSI6IkVuZ2xpc2giLCJEb2MgRGl2aXNpb24iOiJNQ0QiLCJEb2MgQlUiOiJJQ1ciLCJEb2MgRmFtaWx5IjoiUFNPQyJ9)
 
 See the [Design and implementation](docs/design_and_implementation.md) for the functional description of this code example.
 
 
 ## Requirements
 
-- [ModusToolbox&trade;](https://www.infineon.com/modustoolbox) v3.7 or later (tested with v3.8)
+- [ModusToolbox&trade;](https://www.infineon.com/modustoolbox) v3.8 or later (tested with v3.9)
 - Board support package (BSP) minimum required version for:
    - KIT_PSE84_EVAL_EPC2: v1.0.0
    - KIT_PSE84_EVAL_EPC4: v1.0.0
    - KIT_PSE84_AI: v1.0.0
    - KIT_PSE84_HMI: v1.3.0
+   - KIT_PSE846_EVAL_EPC2: v1.5.0
 - Programming language: C
 - Associated parts: All [PSOC&trade; Edge E84 MCU](https://www.infineon.com/products/microcontroller/32-bit-psoc-arm-cortex/32-bit-psoc-edge-arm/psoc-edge-e84) parts
 
@@ -29,7 +30,7 @@ See the [Design and implementation](docs/design_and_implementation.md) for the f
 - GNU Arm&reg; Embedded Compiler v14.2.1 (`GCC_ARM`) – Default value of `TOOLCHAIN`
 - Arm&reg; Compiler v6.22 (`ARM`)
 - IAR C/C++ Compiler v9.70.4 (`IAR`)
-- LLVM Embedded Toolchain for Arm&reg; v19.1.5 (`LLVM_ARM`)
+- Arm&reg; Toolchain for Embedded v22.1 (`LLVM_ARM`)
 
 
 ## Supported kits (make variable 'TARGET')
@@ -38,17 +39,19 @@ See the [Design and implementation](docs/design_and_implementation.md) for the f
 - [PSOC&trade; Edge E84 Evaluation Kit](https://www.infineon.com/KIT_PSE84_EVAL) (`KIT_PSE84_EVAL_EPC4`)
 - [PSOC&trade; Edge E84 AI Kit](https://www.infineon.com/KIT_PSE84_AI) (`KIT_PSE84_AI`)
 - [PSOC&trade; Edge E84 HMI Kit](https://www.infineon.com/KIT_PSE84_HMI) (`KIT_PSE84_HMI`)
+- [PSOC&trade; Edge E846 Evaluation Kit](https://www.infineon.com/KIT_PSE846_EVAL) (`KIT_PSE846_EVAL_EPC2`)
 
 ## Hardware setup
 
 This example uses the board's default configuration. See the kit user guide to ensure that the board is configured correctly.
 
-Ensure the following jumper and pin configuration on board.
+Ensure the following jumper and pin configuration on the board.
+ 
 - BOOT SW must be in the HIGH/ON position
-- J20 and J21 must be in the tristate/not connected (NC) position for the PSOC&trade; Edge E84 Evaluation Kit
-
-> **Note:** This hardware setup is not required for KIT_PSE84_AI
-
+- J20 and J21 must be in the tristate/not connected (NC) position (for the PSOC&trade; Edge E84 Evaluation Kit)
+- All SW8 DIP switches in OFF position (for the PSOC&trade; Edge E846 Evaluation Kit).
+ 
+> **Note:** This hardware setup is not required for KIT_PSE84_AI.
 ## Software setup
 
 See the [ModusToolbox&trade; tools package installation guide](https://www.infineon.com/ModusToolboxInstallguide) for information about installing and configuring the tools package.
@@ -92,7 +95,7 @@ Prior to executing Edge Protect Tools commands, you must identify the silicon re
 
 1. Execute the following command to identify the silicon revision:
 
-   - For EPC2 devices (KIT_PSE84_EVAL_EPC2, KIT_PSE84_AI, and KIT_PSE84_HMI):
+   - For EPC2 devices (KIT_PSE84_EVAL_EPC2, KIT_PSE84_AI, KIT_PSE84_HMI and KIT_PSE846_EVAL_EPC2):
 
     ```
     edgeprotecttools -t pse8xs2 device-info
@@ -135,7 +138,7 @@ Ownership of the device should be transferred to yourself before changing the po
 
 2. Execute the following command to initialize the tools. This step is required one-time when using new application directory or new version of the tools.
 
-   - For EPC2 devices (KIT_PSE84_EVAL_EPC2, KIT_PSE84_AI, and KIT_PSE84_HMI), use this command:
+   - For EPC2 devices (KIT_PSE84_EVAL_EPC2, KIT_PSE84_AI, KIT_PSE84_HMI and KIT_PSE846_EVAL_EPC2), use this command:
 
     ```
     edgeprotecttools -t pse8xs2 init
@@ -294,7 +297,7 @@ Application notes  | [AN235935](https://www.infineon.com/AN235935) – Getting s
 Code examples  | [Using ModusToolbox&trade;](https://github.com/Infineon/Code-Examples-for-ModusToolbox-Software) on GitHub
 Device documentation | [PSOC&trade; Edge E84 MCU datasheet](https://www.infineon.com/products/microcontroller/32-bit-psoc-arm-cortex/32-bit-psoc-edge-arm#documents) <br> [PSOC&trade; Edge E84 MCU reference manuals](https://www.infineon.com/products/microcontroller/32-bit-psoc-arm-cortex/32-bit-psoc-edge-arm#documents)
 Development kits | Select your kits from the [Evaluation board finder](https://www.infineon.com/cms/en/design-support/finder-selection-tools/product-finder/evaluation-board)
-Libraries  | [mtb-dsl-pse8xxgp](https://github.com/Infineon/mtb-dsl-pse8xxgp) – Device support library for PSE8XXGP <br> [retarget-io](https://github.com/Infineon/retarget-io) – Utility library to retarget STDIO messages to a UART port
+Libraries  | [mtb-dsl-pse8xxgp](https://github.com/Infineon/mtb-dsl-pse8xxgp) – Device support library for PSE8XXGP <br> [mtb-dsl-pse8x6](https://github.com/Infineon/mtb-dsl-pse8x6) – Device support library for PSE8X6 <br> [retarget-io](https://github.com/Infineon/retarget-io) – Utility library to retarget STDIO messages to a UART port
 Tools  | [ModusToolbox&trade;](https://www.infineon.com/modustoolbox) – ModusToolbox&trade; software is a collection of easy-to-use libraries and tools enabling rapid development with Infineon MCUs for applications ranging from wireless and cloud-connected systems, edge AI/ML, embedded sense and control, to wired USB connectivity using PSOC&trade; Industrial/IoT MCUs, AIROC&trade; Wi-Fi and Bluetooth&reg; connectivity devices, XMC&trade; Industrial MCUs, and EZ-USB&trade;/EZ-PD&trade; wired connectivity controllers. ModusToolbox&trade; incorporates a comprehensive set of BSPs, HAL, libraries, configuration tools, and provides support for industry-standard IDEs to fast-track your embedded application development
 
 <br>
@@ -320,6 +323,7 @@ Document title: *CE238537* – *PSOC&trade; Edge MCU: Basic secure application*
  2.3.0   | Added support for KIT_PSE84_HMI
  2.4.0   | Added information to determine silicon revision before using Edge Protect Tools commands <br> Added support for PQC <br> Updated design files to improve functionality
  2.4.1   | ECO configurations update for KIT_PSE84_HMI
+ 2.5.0   | Added support for KIT_PSE846_EVAL_EPC2
 <br>
 
 All referenced product or service names and trademarks are the property of their respective owners.
